@@ -6,10 +6,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-black shadow-lg z-50">
+    <nav className="fixed top-0 left-0 w-full bg-yellow-300 shadow-lg z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo / Brand */}
-        <h1 className="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-indigo-400 to-yellow-500 bg-clip-text text-transparent">
+        <h1 className="text-2xl  bold tracking-wide text-shadow-violet-50 bg-clip-text text-white">
           Abdullah Jewellery
         </h1>
 

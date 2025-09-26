@@ -1,7 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 
-const products = [
+export const BraceletsProducts = [
   {
     id: 1,
     name: "Elegant Bracelet",
@@ -40,31 +41,32 @@ const Bracelets = () => {
 
       {/* Product Grid */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-6 pb-12">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className="bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
-          >
-            {/* Product Image */}
-            <img
-              src={product.img}
-              alt={product.name}
-              className="w-full h-48 object-cover"
-            />
+        {BraceletsProducts.map((product) => (
+          <Link key={product.id} to={`/product/bracelets/${product.id}`}>
+            <div
+              className="bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
+            >
+              {/* Product Image */}
+              <img
+                src={product.img}
+                alt={product.name}
+                className="w-full h-48 object-cover"
+              />
 
-            {/* Product Info */}
-            <div className="p-4 flex flex-col items-center">
-              <h2 className="text-lg font-semibold text-gray-800">
-                {product.name}
-              </h2>
-              <p className="text-yellow-600 font-bold mt-2">{product.price}</p>
+              {/* Product Info */}
+              <div className="p-4 flex flex-col items-center">
+                <h2 className="text-lg font-semibold text-gray-800">
+                  {product.name}
+                </h2>
+                <p className="text-yellow-600 font-bold mt-2">{product.price}</p>
 
-              {/* Add to Cart Button */}
-              <button className="mt-4 w-full py-2 bg-yellow-400 text-black font-medium rounded-lg shadow hover:bg-yellow-500 transition">
-                Add to Cart
-              </button>
+                {/* Add to Cart Button */}
+                <button className="mt-4 w-full py-2 bg-yellow-400 text-black font-medium rounded-lg shadow hover:bg-yellow-500 transition">
+                  Add to Cart
+                </button>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

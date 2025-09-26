@@ -12,6 +12,7 @@ import Rings from './components/Rings'
 import BestSellers from "./components/BestSellers";
 import Contact from './components/Contact'
 import ProductDetail from './components/ProductDetails'
+import Footer from './components/Footer'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -26,11 +27,12 @@ function App() {
           <Route path="/earrings" element={<Earrings />} />
           <Route path="/bracelets" element={<Bracelets />} />
           <Route path="/rings" element={<Rings />} />
-          <Route path="/product/necklaces/:id" element={<ProductDetail />} />
+          <Route path="/product/:category/:id" element={<ProductDetail />} />
 
           <Route path="/best-sellers" element={<BestSellers />} />
           <Route path="/contacts" element={<Contact/>}/>
         </Routes>
+        <Footer />
       </div>
     </div>
   )

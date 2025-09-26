@@ -3,10 +3,12 @@ import { useState, useEffect } from "react";
 import image1 from "../assets/images/image1.png";
 import image2 from "../assets/images/image2.png";
 import image3 from "../assets/images/image3.png";
+import { useNavigate } from "react-router-dom";
 
 
 const Home = () => {
   const images = [image1, image2, image3];
+  const navigate = useNavigate()
 
   const [current, setCurrent] = useState(0);
 
@@ -65,7 +67,9 @@ const Home = () => {
           ✨ Elegant designs. Timeless beauty. ✨
         </motion.p>
 
-        <motion.button
+        <motion.button onClick={()=>{
+         navigate("/necklaces")
+        }}
           className="mt-8 px-8 py-3 rounded-full bg-[#FFD700] text-black font-semibold shadow-lg hover:bg-yellow-500 transition"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

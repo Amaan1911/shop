@@ -1,10 +1,26 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { NecklacesProducts } from "./Necklaces";
+import { EaringsProducts } from "./Earings";
+import { BraceletsProducts } from "./Bracelets";
 
 const ProductDetail = () => {
-  const { id } = useParams();
-  const product = NecklacesProducts.find((p) => p.id === parseInt(id));
+  const { category, id } = useParams();
+  let productsArray;
+  switch (category.toLowerCase()) {
+    case 'necklaces':
+      productsArray = NecklacesProducts;
+      break;
+    case 'earrings':
+      productsArray = EaringsProducts;
+      break;
+    case 'bracelets':
+      productsArray = BraceletsProducts;
+      break;
+    default:
+      productsArray = [];
+  }
+  const product = productsArray.find((p) => p.id === parseInt(id));
 
   if (!product) return <p className="text-center mt-20 text-xl">Product not found!</p>;
 
