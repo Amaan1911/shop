@@ -37,7 +37,7 @@ const Navbar = () => {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 h-full flex justify-between items-center">
+      <div className="max-w-7xl mx-auto  px-4 h-full flex justify-between items-center">
         {/* Logo */}
         <motion.div
           whileHover={{ scale: 1.05 }}
@@ -46,7 +46,7 @@ const Navbar = () => {
         >
           <Sparkles className="text-2xl text-yellow-400" />
           <h1 className="text-lg md:text-xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent">
-            Abdullah Jewellery
+            A.K Jewellery
           </h1>
         </motion.div>
 

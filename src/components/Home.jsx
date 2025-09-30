@@ -129,12 +129,12 @@ const Home = () => {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2  transform -translate-x-1/2 animate-fadeIn">
-          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center animate-glow">
-            <div className="w-1 h-3 bg-yellow-400 rounded-full mt-2 animate-float" />
-          </div>
-        </div>
-      </div>
+        {/* <div className="absolute bottom-8 left-1/2 -translate-x-1/2 transform animate-fadeIn">
+  <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center animate-glow">
+    <div className="w-1 h-3 bg-yellow-400 rounded-full mt-2 animate-float" />
+  </div> */}
+</div>
+
 
       {/* Animated Grid Pattern */}
       <div className="absolute inset-0 opacity-10">

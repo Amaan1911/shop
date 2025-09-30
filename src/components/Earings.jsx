@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addItem } from "../store/cartSlice";
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import { ShoppingCart, Eye, Heart, Sparkles, Play } from "lucide-react";
 import bgVideo from "../assets/Earings/assetVideo.mp4";
 import image1 from "../assets/Earings/1.jpg";
@@ -15,22 +14,55 @@ import image6 from "../assets/Earings/6.jpg";
 import image7 from "../assets/Earings/7.jpg";
 
 export const EaringsProducts = [
-  { id: 1, name: "Elegant Pearl Earrings", price: "₹799", img: image1 },
-  { id: 2, name: "Classic Gold Hoops", price: "₹999", img: image2 },
-  { id: 3, name: "Diamond Studs", price: "₹1499", img: image3 },
-  { id: 4, name: "Silver Drop Earrings", price: "₹599", img: image4 },
-  { id: 5, name: "Silver Drop Earrings", price: "₹599", img: image5 },
-  { id: 6, name: "Silver Drop Earrings", price: "₹599", img: image6 },
-  { id: 7, name: "Silver Drop Earrings", price: "₹599", img: image7 },
+  { id: 1, name: "Elegant Pearl Drop", price: "₹799", priceNumber: 799, img: image1 },
+  { id: 2, name: "Classic Gold Hoops", price: "₹999", priceNumber: 999, img: image2 },
+  { id: 3, name: "Brilliant Diamond Studs", price: "₹1499", priceNumber: 1499, img: image3 },
+  { id: 4, name: "Bohemian Silver Dangle", price: "₹599", priceNumber: 599, img: image4 },
+  { id: 5, name: "Minimalist Bar", price: "₹599", priceNumber: 599, img: image5 },
+  { id: 6, name: "Cubic Zirconia Cluster", price: "₹599", priceNumber: 599, img: image6 },
+  { id: 7, name: "Geometric Statement", price: "₹599", priceNumber: 599, img: image7 },
 ];
+
+// --- Custom Button Components for a professional look ---
+
+const PrimaryButton = ({ onClick, children, className = "" }) => (
+  <motion.button
+    onClick={onClick}
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.98 }}
+    className={`w-full flex items-center justify-center space-x-2 px-3 py-2 text-sm font-semibold rounded-md transition-all duration-300 transform 
+      bg-rose-600 text-white shadow-lg shadow-rose-600/30
+      hover:bg-rose-500 hover:shadow-rose-500/50 
+      ${className}`}
+  >
+    {children}
+  </motion.button>
+);
+
+const SecondaryButton = ({ onClick, children, className = "" }) => (
+  <motion.button
+    onClick={onClick}
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.98 }}
+    className={`w-full flex items-center justify-center space-x-2 px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 transform 
+      border border-rose-700 text-rose-400 
+      hover:bg-rose-900/40 hover:text-rose-300 
+      ${className}`}
+  >
+    {children}
+  </motion.button>
+);
+
+// --------------------------------------------------------
 
 const Earings = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState(null);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const videoRef = useRef(null);
+  const [isVideoMuted, setIsVideoMuted] = useState(true); // Keep video muted by default
+  const productGridRef = useRef(null);
+  const isGridInView = useInView(productGridRef, { once: true, margin: "-100px" });
 
   const handleAddToCart = (product) => {
     const priceNumber = Number(String(product.price).replace(/[^0-9.]/g, ""));
@@ -44,66 +76,94 @@ const Earings = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const toggleMute = () => {
+    setIsVideoMuted(prev => !prev);
+  };
+  
+  // --- Framer Motion Variants ---
+
+  const headerVariants = {
+    animate: { transition: { staggerChildren: 0.2 } },
+  };
+
+  const lineVariants = {
+    initial: { opacity: 0, y: -20 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.08,
         delayChildren: 0.2,
       },
     },
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 50, scale: 0.9 },
+    hidden: { opacity: 0, y: 50, scale: 0.95 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.6,
+        duration: 0.5,
         ease: "easeOut",
       },
     },
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* Enhanced Background Video */}
+    <div className="relative min-h-screen overflow-hidden bg-gray-950">
+      
+      {/* Background Video and Controls */}
       <div className="absolute inset-0">
         <video
+          ref={videoRef}
           className="w-full h-full object-cover"
           src={bgVideo}
           autoPlay
           loop
-          muted
+          muted={isVideoMuted} // Use state here
           playsInline
-          style={{ filter: "brightness(0.2) contrast(1.3) saturate(1.6)" }}
+          // Style adjusted for a moodier, professional look
+          style={{ filter: "brightness(0.15) contrast(1.2) saturate(1.5)" }} 
         />
-        {/* Enhanced Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-rose-900/20 to-black/85" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-rose-900/10 to-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 via-transparent to-gray-950/50" />
+        
+        {/* Mute/Unmute Control */}
+        <motion.button
+          onClick={toggleMute}
+          className="absolute bottom-8 right-8 p-3 rounded-full bg-white/10 backdrop-blur-sm text-gray-300 hover:bg-white/20 transition-colors z-20"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          aria-label={isVideoMuted ? "Unmute video" : "Mute video"}
+        >
+          {isVideoMuted ? <Play className="w-5 h-5" /> : <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4a1 1 0 011-1h4a1 1 0 011 1v1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4v1a1 1 0 01-1 1H6a1 1 0 01-1-1v-4H1a1 1 0 01-1-1V6a1 1 0 011-1h4V4zM7 6v8h6V6H7zM4 6h1v8H4V6zm12 0v8h-1V6h1z" clipRule="evenodd" fillRule="evenodd"></path></svg>} 
+        </motion.button>
       </div>
 
       {/* Floating Particles */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none opacity-60">
         {Array.from({ length: 15 }, (_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-yellow-400/60 rounded-full"
+            className="absolute w-1 h-1 bg-rose-400/50 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
             animate={{
-              y: [-20, 20, -20],
+              y: [-15, 15, -15],
               x: [-10, 10, -10],
-              scale: [0.8, 1.2, 0.8],
-              opacity: [0.3, 0.8, 0.3],
+              scale: [0.7, 1.1, 0.7],
+              opacity: [0.4, 0.9, 0.4],
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: 4 + Math.random() * 2,
               delay: Math.random() * 3,
               repeat: Infinity,
               ease: "easeInOut",
@@ -113,171 +173,122 @@ const Earings = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 p-8 flex flex-col items-center min-h-screen">
-        {/* Enhanced Header */}
+      <div className="relative z-10 p-4 md:p-8 flex flex-col items-center min-h-screen">
+        
+        {/* ENHANCED ANIMATED HEADER (COMPACT) */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-20 mt-20"
+          variants={headerVariants}
+          initial="initial"
+          animate="animate"
+          className="text-center mb-16 mt-20 md:mt-24"
         >
-          <motion.div
-            className="inline-flex items-center space-x-3 mb-6"
-            animate={{ rotate: [0, 5, -5, 0] }}
-            transition={{ duration: 4, repeat: Infinity }}
+          <motion.div 
+            variants={lineVariants}
+            className="inline-flex items-center space-x-3 mb-3"
           >
-            <Sparkles className="w-10 h-10 text-rose-400 animate-pulse" />
-            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-rose-400 via-pink-300 to-rose-500 bg-clip-text text-transparent">
-              Earrings
-            </h1>
-            <Sparkles className="w-10 h-10 text-rose-400 animate-pulse" />
+            <Sparkles className="w-6 h-6 text-rose-400" />
+            <motion.h1 
+              className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-rose-400 via-pink-300 to-rose-500 bg-clip-text text-transparent tracking-tight"
+            >
+              The Earrings Collection
+            </motion.h1>
+            <Sparkles className="w-6 h-6 text-rose-400" />
           </motion.div>
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
+            variants={lineVariants}
+            className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto font-light"
           >
-            Discover our stunning collection of earrings. Handcrafted with elegance and modern design to complement your unique style.
+            Find your perfect pair. From statement pieces to classic studs, crafted for every occasion.
           </motion.p>
         </motion.div>
 
-        {/* Enhanced Product Grid */}
+        {/* --- Product Grid --- */}
         <motion.div
-          ref={ref}
+          ref={productGridRef}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full max-w-7xl"
+          animate={isGridInView ? "visible" : "hidden"}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-7xl"
         >
           {EaringsProducts.map((product, index) => (
             <motion.div
               key={product.id}
               variants={cardVariants}
-              whileHover={{ 
-                y: -12, 
-                scale: 1.03,
-                transition: { duration: 0.3 }
-              }}
+              // Enhanced Hover Effect for more lift
+              whileHover={{ y: -8, scale: 1.02 }} 
               onHoverStart={() => setHoveredCard(product.id)}
               onHoverEnd={() => setHoveredCard(null)}
-              className="group relative"
-              style={{
-                animationDelay: `${index * 0.1}s`
-              }}
+              className="group relative cursor-pointer"
             >
-              <div className="card-product h-full flex flex-col">
+              <div className="bg-gray-900 border border-gray-800 rounded-lg shadow-xl shadow-black/50 overflow-hidden h-full flex flex-col transition-shadow duration-300 group-hover:shadow-rose-900/40">
+                
                 {/* Image Container */}
                 <div
-                  className="relative overflow-hidden cursor-pointer"
+                  className="relative overflow-hidden aspect-square"
                   onClick={() => navigate(`/product/earrings/${product.id}`)}
                 >
-                  <motion.img
+                  <img
                     loading="lazy"
                     src={product.img}
                     alt={product.name}
-                    className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110"
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.4 }}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   
-                  {/* Enhanced Overlay */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                  
-                  {/* Enhanced Action Buttons */}
-                  <motion.div
-                    className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
-                    initial={{ opacity: 0, x: 20 }}
-                    whileHover={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="flex flex-col space-y-2">
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
-                      >
-                        <Heart className="w-4 h-4" />
-                      </motion.button>
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </motion.button>
-                    </div>
-                  </motion.div>
-
-                  {/* Enhanced Quick Add to Cart */}
-                  <motion.div
-                    className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileHover={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
+                  {/* Quick Actions Overlay (Top Right) */}
+                  <div className="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <motion.button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToCart(product);
-                      }}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="btn-gold w-full py-3 flex items-center justify-center space-x-2"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="p-2 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
+                      aria-label="Add to Wishlist"
                     >
-                      <ShoppingCart className="w-4 h-4" />
-                      <span>Quick Add</span>
+                      <Heart className="w-4 h-4 text-rose-300" />
                     </motion.button>
-                  </motion.div>
+                  </div>
                 </div>
 
-                {/* Enhanced Product Info */}
-                <div className="p-6 flex-1 flex flex-col">
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-rose-400 transition-colors duration-300">
+                {/* Product Info & Actions */}
+                <div className="p-4 flex-1 flex flex-col">
+                  <h3 className="text-base font-semibold text-white mb-2 line-clamp-1 group-hover:text-rose-400 transition-colors">
                     {product.name}
                   </h3>
                   
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="text-3xl font-bold bg-gradient-to-r from-rose-400 to-rose-500 bg-clip-text text-transparent">
+                  {/* Price and Rating */}
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-xl font-bold bg-gradient-to-r from-rose-400 to-rose-500 bg-clip-text text-transparent">
                       {product.price}
                     </span>
-                    <div className="flex space-x-1">
+                    <div className="flex space-x-0.5">
                       {[...Array(5)].map((_, i) => (
-                        <Sparkles key={i} className="w-4 h-4 text-rose-400 opacity-60" />
+                        <Sparkles key={i} className="w-3 h-3 text-rose-400 opacity-80" />
                       ))}
                     </div>
                   </div>
 
-                  {/* Enhanced Action Buttons */}
-                  <div className="flex space-x-3 mt-auto">
-                    <button
-                      onClick={() => navigate(`/product/earrings/${product.id}`)}
-                      className="btn-outline flex-1"
+                  {/* Action Buttons (Compact) */}
+                  <div className="flex flex-col space-y-2 mt-auto">
+                    <PrimaryButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart(product);
+                      }}
                     >
-                      <span>View Details</span>
-                    </button>
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className="btn-rose flex-1"
-                    >
+                      <ShoppingCart className="w-4 h-4" />
                       <span>Add to Cart</span>
-                    </button>
+                    </PrimaryButton>
+                    <SecondaryButton 
+                      onClick={() => navigate(`/product/earrings/${product.id}`)}
+                    >
+                      <Eye className="w-4 h-4" />
+                      <span>View Details</span>
+                    </SecondaryButton>
                   </div>
                 </div>
 
-                {/* Enhanced Glow Effect */}
-                <motion.div
-                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{
-                    background: "linear-gradient(45deg, rgba(244,63,94,0.1), rgba(255,215,0,0.1))",
-                    filter: "blur(30px)",
-                  }}
-                />
+                {/* Subtle Rose Border/Glow on Hover */}
+                {hoveredCard === product.id && (
+                  <div className="absolute inset-0 rounded-lg pointer-events-none border-2 border-rose-500/50 animate-pulse-slow" />
+                )}
               </div>
             </motion.div>
           ))}
@@ -288,18 +299,16 @@ const Earings = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 0.8 }}
-          className="text-center mt-20"
+          className="text-center mt-20 mb-10"
         >
-          <motion.button
+          <PrimaryButton
             onClick={() => navigate("/best-sellers")}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn-rose px-12 py-4 text-lg font-bold rounded-full"
+            className="px-10 py-3 text-lg font-bold rounded-full shadow-xl shadow-rose-600/30"
           >
-            <Sparkles className="w-6 h-6" />
-            <span>View All Collections</span>
-            <Sparkles className="w-6 h-6" />
-          </motion.button>
+            <Sparkles className="w-5 h-5" />
+            <span>Explore More Collections</span>
+            <Sparkles className="w-5 h-5" />
+          </PrimaryButton>
         </motion.div>
       </div>
     </div>

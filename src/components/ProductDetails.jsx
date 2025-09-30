@@ -110,7 +110,8 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="min-h-screen  mt-[-30px] bg-gradient-to-br from-gray-900 via-black to-gray-900 py-20">
+    <div className="min-h-[80vh] mt-[-30px] bg-gradient-to-br from-gray-900 via-black to-gray-900 py-10">
+
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-pink-900/20" />
@@ -141,7 +142,7 @@ const ProductDetail = () => {
           >
             {/* Main Image with 3D Effect */}
             <motion.div
-              className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-800 to-gray-900 p-8"
+              className="relative overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 p-8"
               style={{ rotateX, rotateY }}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
