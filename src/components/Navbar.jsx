@@ -1,121 +1,138 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react"; // icons
+import { Menu, X, ShoppingCart, Sparkles } from "lucide-react";
+import { useSelector } from "react-redux";
+import { selectCartCount } from "../store/cartSlice";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const cartCount = useSelector(selectCartCount);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navItems = [
+    { to: "/", label: "Home" },
+    { to: "/necklaces", label: "Necklaces" },
+    { to: "/earrings", label: "Earrings" },
+    { to: "/bangles", label: "Bangles" },
+    { to: "/rings", label: "Rings" },
+    { to: "/best-sellers", label: "Best Sellers" },
+    { to: "/contacts", label: "Contact" },
+  ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-yellow-300 shadow-lg z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo / Brand */}
-        <h1 className="text-2xl  bold tracking-wide text-shadow-violet-50 bg-clip-text text-white">
-          Abdullah Jewellery
-        </h1>
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={`fixed top-0 left-0 w-full z-[9999] h-[50px] transition-all duration-500 ${
+        scrolled
+          ? "glass-effect shadow-2xl backdrop-blur-xl bg-white/20 border-b border-white/10"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 h-full flex justify-between items-center">
+        {/* Logo */}
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center space-x-2 h-full"
+        >
+          <Sparkles className="text-2xl text-yellow-400" />
+          <h1 className="text-lg md:text-xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent">
+            Abdullah Jewellery
+          </h1>
+        </motion.div>
 
         {/* Desktop Links */}
-        <ul className="hidden md:flex space-x-6 text-white font-medium">
-          <li>
-            <Link to="/" className="hover:text-yellow-500 transition">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/necklaces" className="hover:text-yellow-500 transition">
-              Necklaces
-            </Link>
-          </li>
-          <li>
-            <Link to="/earrings" className="hover:text-yellow-500 transition">
-              Earrings
-            </Link>
-          </li>
-          <li>
-            <Link to="/bracelets" className="hover:text-yellow-500 transition">
-              Bracelets
-            </Link>
-          </li>
-          <li>
-            <Link to="/rings" className="hover:text-yellow-500 transition">
-              Rings
-            </Link>
-          </li>
-          <li>
-            <Link to="/best-sellers" className="hover:text-yellow-500 transition">
-              Best Sellers
-            </Link>
-          </li>
-          <li>
-            <Link to="/contacts" className="hover:text-yellow-500 transition">
-              Contact
-            </Link>
-          </li>
+        <ul className="hidden md:flex items-center gap-6 h-full">
+          {navItems.map((item) => (
+            <li key={item.to} className="flex items-center h-full">
+              <Link
+                to={item.to}
+                className="text-white hover:text-yellow-400 px-3 py-1 font-semibold transition-all duration-300 flex items-center h-full"
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
+
+          {/* Cart */}
+          <li className="flex items-center relative h-full">
+  <Link
+    to="/cart"
+    className="flex items-center space-x-2 text-white hover:text-yellow-400 transition-all duration-300 relative"
+  >
+    <ShoppingCart className="w-5 h-5" />
+    <span className="text-sm">Cart</span>
+    {cartCount > 0 && (
+      <span className="absolute -top-2 -right-2 text-[10px] bg-red-500 text-white rounded-full px-1.5 py-0.5 font-bold flex items-center justify-center">
+        {cartCount}
+      </span>
+    )}
+  </Link>
+</li>
         </ul>
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-white"
+          className="md:hidden text-white p-2 rounded-lg flex items-center"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile Dropdown */}
-      {isOpen && (
-        <div className="md:hidden bg-black text-white px-6 py-4 space-y-4">
-          <Link
-            to="/"
-            className="block hover:text-yellow-500"
-            onClick={() => setIsOpen(false)}
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden bg-black/80 backdrop-blur-xl border-t border-white/10"
           >
-            Home
-          </Link>
-          <Link
-            to="/necklaces"
-            className="block hover:text-yellow-500"
-            onClick={() => setIsOpen(false)}
-          >
-            Necklaces
-          </Link>
-          <Link
-            to="/earrings"
-            className="block hover:text-yellow-500"
-            onClick={() => setIsOpen(false)}
-          >
-            Earrings
-          </Link>
-          <Link
-            to="/bracelets"
-            className="block hover:text-yellow-500"
-            onClick={() => setIsOpen(false)}
-          >
-            Bracelets
-          </Link>
-          <Link
-            to="/rings"
-            className="block hover:text-yellow-500"
-            onClick={() => setIsOpen(false)}
-          >
-            Rings
-          </Link>
-          <Link
-            to="/best-sellers"
-            className="block hover:text-yellow-500"
-            onClick={() => setIsOpen(false)}
-          >
-            Best Sellers
-          </Link>
-          <Link
-            to="/contacts"
-            className="block hover:text-yellow-500"
-            onClick={() => setIsOpen(false)}
-          >
-            Contact
-          </Link>
-        </div>
-      )}
-    </nav>
+            <ul className="flex flex-col gap-2 px-4 py-3">
+              {navItems.map((item) => (
+                <li key={item.to}>
+                  <Link
+                    to={item.to}
+                    className="block text-white hover:text-yellow-400 px-2 py-2 font-semibold transition-all duration-300"
+                    onClick={() => setIsOpen(false)} 
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+
+              {/* Cart in mobile menu */}
+              <li className="flex items-center mt-2">
+                <Link
+                  to="/cart"
+                  className="flex items-center space-x-2 text-white hover:text-yellow-400 px-2 py-2 transition-all duration-300"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <ShoppingCart className="w-5 h-5 " />
+                  <span>Cart</span>
+                  {cartCount > 0 && (
+                    <span className="text-xs bg-red-500 text-white rounded-full font-bold">
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
+              </li>
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 };
 

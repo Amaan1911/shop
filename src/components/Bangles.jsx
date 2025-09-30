@@ -4,39 +4,49 @@ import { useDispatch } from "react-redux";
 import { addItem } from "../store/cartSlice";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { ShoppingCart, Eye, Heart, Sparkles, Play } from "lucide-react";
-import bgVideo from "../assets/Earings/assetVideo.mp4";
-import image1 from "../assets/Earings/1.jpg";
-import image2 from "../assets/Earings/2.jpg";
-import image3 from "../assets/Earings/3.jpg";
-import image4 from "../assets/Earings/4.jpg";
-import image5 from "../assets/Earings/5.jpg";
-import image6 from "../assets/Earings/6.jpg";
-import image7 from "../assets/Earings/7.jpg";
+import { ShoppingCart, Eye, Heart, Sparkles } from "lucide-react";
+import Image1 from "../assets/Bangles/1.jpg";
+import Image2 from "../assets/Bangles/2.jpg";
+import Image3 from "../assets/Bangles/3.jpg";
+import Image4 from "../assets/Bangles/4.jpg";
+import Image5 from "../assets/Bangles/5.jpg";
+import Image6 from "../assets/Bangles/6.jpg";
+import Image7 from "../assets/Bangles/7.jpg";
+import Image8 from "../assets/Bangles/8.jpg";
+import Image9 from "../assets/Bangles/9.jpg";
+import Image10 from "../assets/Bangles/10.jpg";
+import Image11 from "../assets/Bangles/11.jpg";
 
-export const EaringsProducts = [
-  { id: 1, name: "Elegant Pearl Earrings", price: "₹799", img: image1 },
-  { id: 2, name: "Classic Gold Hoops", price: "₹999", img: image2 },
-  { id: 3, name: "Diamond Studs", price: "₹1499", img: image3 },
-  { id: 4, name: "Silver Drop Earrings", price: "₹599", img: image4 },
-  { id: 5, name: "Silver Drop Earrings", price: "₹599", img: image5 },
-  { id: 6, name: "Silver Drop Earrings", price: "₹599", img: image6 },
-  { id: 7, name: "Silver Drop Earrings", price: "₹599", img: image7 },
+export const BangleProducts = [
+  { id: 1, name: "Elegant Bangle", price: "₹799", img: Image1 },
+  { id: 2, name: "Gold Plated Bangle", price: "₹999", img: Image2 },
+  { id: 3, name: "Silver Charm Bangle", price: "₹699", img: Image3 },
+  { id: 4, name: "Pearl Stone Bangle", price: "₹899", img: Image4 },
+  { id: 5, name: "Traditional Kada", price: "₹1299", img: Image5 },
+  { id: 6, name: "Diamond Studded Bangle", price: "₹1599", img: Image6 },
+  { id: 7, name: "Antique Brass Bangle", price: "₹599", img: Image7 },
+  { id: 8, name: "Rose Gold Bangle", price: "₹1199", img: Image8 },
+  { id: 9, name: "Modern Sleek Bangle", price: "₹499", img: Image9 },
+  { id: 10, name: "Designer Bridal Bangle", price: "₹1999", img: Image10 },
+  { id: 11, name: "Crystal Studded Bangle", price: "₹899", img: Image11 },
 ];
 
-const Earings = () => {
+const Bangles = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState(null);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const handleAddToCart = (product) => {
     const priceNumber = Number(String(product.price).replace(/[^0-9.]/g, ""));
-    dispatch(
-      addItem({ id: `earrings-${product.id}`, name: product.name, priceNumber, img: product.img, qty: 1 })
-    );
+    dispatch(addItem({
+      id: `bangles-${product.id}`,
+      name: product.name,
+      img: product.img,
+      priceNumber,
+      qty: 1
+    }));
     navigate("/cart");
   };
 
@@ -69,68 +79,47 @@ const Earings = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* Enhanced Background Video */}
-      <div className="absolute inset-0">
-        <video
-          className="w-full h-full object-cover"
-          src={bgVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{ filter: "brightness(0.2) contrast(1.3) saturate(1.6)" }}
-        />
-        {/* Enhanced Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-rose-900/20 to-black/85" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/50" />
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 py-20">
+      {/* Enhanced Animated Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/10 via-yellow-900/10 to-emerald-900/10" />
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-5" />
+        
+        {/* Floating particles */}
+        <div className="absolute inset-0 pointer-events-none">
+          {Array.from({ length: 15 }, (_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-emerald-400/30 rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${2 + Math.random() * 2}s`
+              }}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Floating Particles */}
-      <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 15 }, (_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-yellow-400/60 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [-20, 20, -20],
-              x: [-10, 10, -10],
-              scale: [0.8, 1.2, 0.8],
-              opacity: [0.3, 0.8, 0.3],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              delay: Math.random() * 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 p-8 flex flex-col items-center min-h-screen">
+      <div className="relative z-10 px-4 md:px-8">
         {/* Enhanced Header */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20 mt-20"
+          className="text-center mb-20"
         >
           <motion.div
             className="inline-flex items-center space-x-3 mb-6"
             animate={{ rotate: [0, 5, -5, 0] }}
             transition={{ duration: 4, repeat: Infinity }}
           >
-            <Sparkles className="w-10 h-10 text-rose-400 animate-pulse" />
-            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-rose-400 via-pink-300 to-rose-500 bg-clip-text text-transparent">
-              Earrings
+            <Sparkles className="w-10 h-10 text-emerald-400 animate-pulse" />
+            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-emerald-400 via-green-300 to-emerald-500 bg-clip-text text-transparent">
+              Bangles
             </h1>
-            <Sparkles className="w-10 h-10 text-rose-400 animate-pulse" />
+            <Sparkles className="w-10 h-10 text-emerald-400 animate-pulse" />
           </motion.div>
           <motion.p
             initial={{ opacity: 0 }}
@@ -138,19 +127,19 @@ const Earings = () => {
             transition={{ delay: 0.5, duration: 0.8 }}
             className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
           >
-            Discover our stunning collection of earrings. Handcrafted with elegance and modern design to complement your unique style.
+            Explore our stunning collection of bangles, from traditional designs to modern elegance, each piece crafted to perfection.
           </motion.p>
         </motion.div>
 
-        {/* Enhanced Product Grid */}
+        {/* Enhanced Products Grid */}
         <motion.div
           ref={ref}
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full max-w-7xl"
+          className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
         >
-          {EaringsProducts.map((product, index) => (
+          {BangleProducts.map((product, index) => (
             <motion.div
               key={product.id}
               variants={cardVariants}
@@ -170,10 +159,9 @@ const Earings = () => {
                 {/* Image Container */}
                 <div
                   className="relative overflow-hidden cursor-pointer"
-                  onClick={() => navigate(`/product/earrings/${product.id}`)}
+                  onClick={() => navigate(`/product/bangles/${product.id}`)}
                 >
                   <motion.img
-                    loading="lazy"
                     src={product.img}
                     alt={product.name}
                     className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110"
@@ -228,7 +216,7 @@ const Earings = () => {
                       }}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="btn-gold w-full py-3 flex items-center justify-center space-x-2"
+                      className="btn-emerald w-full py-3 flex items-center justify-center space-x-2"
                     >
                       <ShoppingCart className="w-4 h-4" />
                       <span>Quick Add</span>
@@ -238,17 +226,17 @@ const Earings = () => {
 
                 {/* Enhanced Product Info */}
                 <div className="p-6 flex-1 flex flex-col">
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-rose-400 transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors duration-300">
                     {product.name}
                   </h3>
                   
                   <div className="flex items-center justify-between mb-6">
-                    <span className="text-3xl font-bold bg-gradient-to-r from-rose-400 to-rose-500 bg-clip-text text-transparent">
+                    <span className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent">
                       {product.price}
                     </span>
                     <div className="flex space-x-1">
                       {[...Array(5)].map((_, i) => (
-                        <Sparkles key={i} className="w-4 h-4 text-rose-400 opacity-60" />
+                        <Sparkles key={i} className="w-4 h-4 text-emerald-400 opacity-60" />
                       ))}
                     </div>
                   </div>
@@ -256,14 +244,14 @@ const Earings = () => {
                   {/* Enhanced Action Buttons */}
                   <div className="flex space-x-3 mt-auto">
                     <button
-                      onClick={() => navigate(`/product/earrings/${product.id}`)}
+                      onClick={() => navigate(`/product/bangles/${product.id}`)}
                       className="btn-outline flex-1"
                     >
                       <span>View Details</span>
                     </button>
                     <button
                       onClick={() => handleAddToCart(product)}
-                      className="btn-rose flex-1"
+                      className="btn-emerald flex-1"
                     >
                       <span>Add to Cart</span>
                     </button>
@@ -274,7 +262,7 @@ const Earings = () => {
                 <motion.div
                   className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                   style={{
-                    background: "linear-gradient(45deg, rgba(244,63,94,0.1), rgba(255,215,0,0.1))",
+                    background: "linear-gradient(45deg, rgba(16,185,129,0.1), rgba(255,215,0,0.1))",
                     filter: "blur(30px)",
                   }}
                 />
@@ -294,7 +282,7 @@ const Earings = () => {
             onClick={() => navigate("/best-sellers")}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            className="btn-rose px-12 py-4 text-lg font-bold rounded-full"
+            className="btn-emerald px-12 py-4 text-lg font-bold rounded-full"
           >
             <Sparkles className="w-6 h-6" />
             <span>View All Collections</span>
@@ -305,5 +293,5 @@ const Earings = () => {
     </div>
   );
 };
-
-export default Earings;
+  
+export default Bangles;
