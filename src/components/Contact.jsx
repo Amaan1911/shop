@@ -30,6 +30,10 @@ const Contact = () => {
     return () => clearInterval(interval);
   }, [images.length]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const contactMethods = [
     {
       icon: FaInstagram,
@@ -214,9 +218,9 @@ const Contact = () => {
 
             </motion.div>
 
-          
+        
               <motion.div
-                className={`lg:col-span-1 ${CARD_STYLE} p-8 h-full bg-cyan-900/40 border-cyan-700/50 shadow-cyan-900/50`}
+                className={`lg:col-span-1 ${CARD_STYLE} p-8 h-full ml-[30px] bg-cyan-900/40 border-cyan-700/50 shadow-cyan-900/50`}
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.2, duration: 0.8 }}
